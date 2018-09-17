@@ -94,7 +94,7 @@ create_client_files() {
   echo -n "2" > $mender_dir/version
 
   cat <<- EOF > $mender_dir/device_type
-	device_type=${device_type}
+	device_type="raspberrypi0w"
 	EOF
 
   case "$device_type" in

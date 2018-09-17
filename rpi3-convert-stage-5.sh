@@ -20,7 +20,7 @@ output_dir=${application_dir}/output
 uboot_dir=${output_dir}/uboot-mender
 bin_dir_pi=${output_dir}/bin/raspberrypi
 sdimg_base_dir=$output_dir/sdimg
-GCC_VERSION="6.3.1"
+GCC_VERSION="7.3.1"
 
 echo "Running: $(basename $0)"
 declare -a sdimgmappings
@@ -36,8 +36,8 @@ version() {
 build_uboot_files() {
   local CROSS_COMPILE=${1}-
   local ARCH=arm
-  local branch="mender-rpi-2017.09"
-  local commit="988e0ec54"
+  local branch="mbe-rpi0-mender"
+  local commit=" b40e087"
   local uboot_repo_vc_dir=$uboot_dir/.git
 
   export CROSS_COMPILE=$CROSS_COMPILE
@@ -48,14 +48,14 @@ build_uboot_files() {
   echo -e "Building U-Boot related files..."
 
   if [ ! -d $uboot_repo_vc_dir ]; then
-    git clone https://github.com/mendersoftware/uboot-mender.git -b $branch
+    git clone https://github.com/nandra/uboot-mender.git -b $branch
     git checkout $commit
   fi
 
   cd $uboot_dir
 
   make --quiet distclean
-  make rpi_3_32b_defconfig && make
+  make rpi_0_w_defconfig && make
   make envtools
 
   cat<<-'EOF' >boot.cmd

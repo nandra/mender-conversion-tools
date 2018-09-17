@@ -8,8 +8,10 @@ boot_mapping=$2
 
 # Make a copy of Linux kernel arguments and modify.
 mcopy -o -i ${output_dir}/boot.vfat -s ::cmdline.txt ${output_dir}/cmdline.txt
-sed -i 's/\b[ ]root=[^ ]*/ root=\/dev\/mmcblk0p2/' ${output_dir}/cmdline.txt
-sed -i 's/\b[ ]console=tty1//' ${output_dir}/cmdline.txt
+if [ -f ${output_dir}/cmdline.txt ]; then
+	sed -i 's/\b[ ]root=[^ ]*/ root=\/dev\/mmcblk0p2/' ${output_dir}/cmdline.txt
+	sed -i 's/\b[ ]console=tty1//' ${output_dir}/cmdline.txt
+fi
 # Update Linux kernel command arguments with our custom configuration
 mcopy -o -i ${output_dir}/boot.vfat -s ${output_dir}/cmdline.txt ::cmdline.txt
 
