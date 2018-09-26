@@ -109,12 +109,12 @@ install_files() {
   sudo ln -sf /dev/null ${rootfs_dir}/etc/systemd/system/udisks2.service
 
   # Extract Linux kernel and install to /boot directory on rootfs
-  sudo cp ${boot_dir}/kernel7.img ${rootfs_dir}/boot/zImage
+  sudo cp ${boot_dir}/kernel.img ${rootfs_dir}/boot/zImage
 
   # Replace kernel with U-boot and add boot script
   sudo mkdir -p ${rootfs_dir}/uboot
 
-  sudo cp ${bin_dir_pi}/u-boot.bin ${boot_dir}/kernel7.img
+  sudo cp ${bin_dir_pi}/u-boot.bin ${boot_dir}/kernel.img
   sudo cp ${bin_dir_pi}/boot.scr ${boot_dir}
 
   sudo cp ${boot_dir}/config.txt ${output_dir}/config.txt
