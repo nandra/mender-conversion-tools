@@ -37,7 +37,7 @@ build_uboot_files() {
   local CROSS_COMPILE=${1}-
   local ARCH=arm
   local branch="mbe-rpi0-mender"
-  local commit=" b40e087"
+  local commit="b40e087aac12a6dbe1e8ca66b551fdf303c38dee"
   local uboot_repo_vc_dir=$uboot_dir/.git
 
   export CROSS_COMPILE=$CROSS_COMPILE
