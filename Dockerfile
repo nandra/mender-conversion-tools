@@ -38,10 +38,13 @@ RUN echo "mtools_skip_check=1" >> $HOME/.mtoolsrc
 # Needed while we use older U-Boot version for Raspberry Pi
 # https://tracker.mender.io/browse/MEN-2198
 # Assumes $(pwd) is /
-RUN wget -nc -q http://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/arm-linux-gnueabihf/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz \
-    && tar -xJf gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz \
-    && rm gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz \
-    && echo export PATH=$PATH:/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin >> /root/.bashrc
+#RUN wget -nc -q http://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/arm-linux-gnueabihf/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz \
+#    && tar -xJf gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz \
+#    && rm gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz \
+#    && echo export PATH=$PATH:/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin >> /root/.bashrc
+
+RUN git clone https://github.com/raspberrypi/tools.git \
+    && echo export PATH=$PATH:/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin >> /root/.bashrc
 
 
 RUN wget -q -O /usr/bin/mender-artifact https://d1b0l86ne08fsf.cloudfront.net/mender-artifact/$MENDER_ARTIFACT_VERSION/mender-artifact \
@@ -58,7 +61,7 @@ ENV MENDER_CLIENT_VERSION=$mender_client_version
 
 # NOTE: we are assuming generic ARM board here, needs to be extended later
 
-ENV PATH "$PATH:/usr/local/go/bin:/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin"
+ENV PATH "$PATH:/usr/local/go/bin:/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin"
 ENV GOPATH "/root/go"
 
 RUN go get github.com/mendersoftware/mender
