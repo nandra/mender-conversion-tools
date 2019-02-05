@@ -21,7 +21,7 @@ uboot_dir=${output_dir}/uboot-mender
 bin_base_dir=${output_dir}/bin
 bin_dir_pi=${bin_base_dir}/raspberrypi
 sdimg_base_dir=$output_dir/sdimg
-GCC_VERSION="6.3.1"
+GCC_VERSION="4.8.3"
 build_log=${output_dir}/build.log
 
 declare -a mender_disk_mappings
