@@ -34,7 +34,7 @@ build_uboot_files() {
   local CROSS_COMPILE=${1}-
   local ARCH=arm
   local branch="mender-rpi-2018.07"
-  local commit="f85840415dbc371b4b37c127737f11f0523e2bb8"
+  local commit="81022f8e7448b96fc6245c55b6b82a80d82e7d81"
   local uboot_repo_vc_dir=$uboot_dir/.git
   local defconfig="rpi_3_32b_defconfig"
 
@@ -50,10 +50,12 @@ build_uboot_files() {
   log "\tBuilding U-Boot related files."
 
   if [ ! -d $uboot_repo_vc_dir ]; then
+    echo "Directory doesn't exists"
     git clone https://github.com/nandra/uboot-mender.git -b $branch >> "$build_log" 2>&1
   fi
 
   cd $uboot_dir
+  echo "cd to $uboot_dir"
 
   git checkout $commit >> "$build_log" 2>&1
 
