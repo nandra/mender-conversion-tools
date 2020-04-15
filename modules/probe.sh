@@ -94,6 +94,49 @@ probe_debian_arch_name() {
   echo "${deb_arch}"
 }
 
+# For x86 distros like e.g. Ubuntu try to find grubx64.efi
+# file and return it's path otherwise return empty path
+#
+# No input parameters and these work on the assumption that boot and root parts
+# are mounted at work/boot
+find_grub_efi_path() {
+  sudo find work/boot -name grubx64.efi
+}
+
+# Try to find distro custom grub if not found use default one
+#
+# No input parameters and these work on the assumption that boot and root parts
+# are mounted at work/boot
+find_grub_efi_target_name() {
+  grub_efi_name=$(basename "$(find_grub_efi_path)")
+
+  # default name
+  if [ -z "${grub_efi_name}" ]; then
+    grub_efi_name="bootx64.efi"
+  fi
+
+  echo "${grub_efi_name}"
+}
+
+# Return path where we find grub bootloader
+# if path is empty use default one
+#
+# No input parameters and these work on the assumption that boot and root parts
+# are mounted at work/boot
+probe_grub_efi_target_dir() {
+  grub_efi_dir=$(dirname "$(find_grub_efi_path)")
+
+  # path doesn't exists dirname return '.'
+  if [ "${grub_efi_dir}" = "." ]; then
+    grub_efi_dir="EFI/BOOT"
+  else
+    # remove work/boot/
+    grub_efi_dir=$(echo ${grub_efi_dir} | sed -e s?work/boot/??g)
+  fi
+
+  echo "${grub_efi_dir}"
+}
+
 # Prints GRUB EFI target name depending on target architecture
 #
 # This is what the file name should be when put on target boot part.
@@ -105,7 +148,7 @@ probe_grub_efi_target_name() {
   arch=$(probe_arch)
   case "$arch" in
     "x86-64")
-      efi_target_name="bootx64.efi"
+      efi_target_name=$(find_grub_efi_target_name)
       ;;
     "arm")
       efi_target_name="bootarm.efi"

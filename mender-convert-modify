@@ -159,16 +159,16 @@ EOF
   arch=$(probe_arch)
   efi_name=$(probe_grub_efi_name)
   efi_target_name=$(probe_grub_efi_target_name)
-
-  log_info "GRUB EFI: ${efi_target_name}"
+  efi_target_dir=$(probe_grub_efi_target_dir)
+  log_info "GRUB EFI: ${efi_target_name} - PATH: ${efi_target_dir}"
 
   run_and_log_cmd "wget -Nq ${MENDER_GRUB_BINARY_STORAGE_URL}/${arch}/${efi_name} -P work/"
   run_and_log_cmd "wget -Nq ${MENDER_GRUB_BINARY_STORAGE_URL}/${arch}/grub-editenv -P work/"
 
   run_and_log_cmd "sudo install -m 751 work/grub-editenv work/rootfs/usr/bin/"
 
-  run_and_log_cmd "sudo mkdir -p work/boot/EFI/BOOT"
-  run_and_log_cmd "sudo cp work/${efi_name} -P work/boot/EFI/BOOT/${efi_target_name}"
+  run_and_log_cmd "sudo mkdir -p work/boot/${efi_target_dir}"
+  run_and_log_cmd "sudo cp work/${efi_name} -P work/boot/${efi_target_dir}/${efi_target_name}"
 
   # Copy dtb directory to the boot partition for use by the bootloader.
   if [ -d work/rootfs/boot/dtbs ]; then
